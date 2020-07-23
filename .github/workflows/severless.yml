@@ -6,7 +6,7 @@ name: serverless CI
 on:
   push:
     branches: 
-      - dev
+      - master
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
       run: npm install -g serverless
     - name: Auto deploy
       env: # Or as an environment variable
-        STAGE: dev
+        STAGE: prod
         SERVERLESS_PLATFORM_VENDOR: tencent
         TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
         TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
