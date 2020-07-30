@@ -6,7 +6,8 @@ name: serverless CI
 on:
   push:
     branches: 
-      - master
+    - master
+    - dev
 
 jobs:
   build:
@@ -34,5 +35,25 @@ jobs:
         SERVERLESS_PLATFORM_VENDOR: tencent
         TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
         TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
-      run: sls deploy --debug
+        INTERVAL: 10 # 10s
+        INIT_TRAFFIC: 20 # init traffic value is 10 == 0.1
+        STEP_TRAFFIC: 20
+        MAX_TRAFFIC: 100 # max traffic:       
+      run: |
+        maxTraffic=$MAX_TRAFFIC
+        curTraffic=$INIT_TRAFFIC
+        stepTraffic=$STEP_TRAFFIC
+        while true
+        do
+            if [ $curTraffic -lt $maxTraffic ]; then
+                traffic=`echo "scale=2;$curTraffic/100" | bc`
+                sls deploy --inputs.traffic=$traffic --inputs.publish
+                sleep $INTERVAL
+            else
+                sls deploy --inputs.traffic=0 --inputs.publish
+                break
+            fi
+            curTraffic=$(($curTraffic+$stepTraffic))
+        done
+    
       
