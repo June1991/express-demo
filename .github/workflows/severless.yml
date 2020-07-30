@@ -45,7 +45,7 @@ jobs:
         stepTraffic=$STEP_TRAFFIC
         while true
         do
-            if [ $curTraffic -lt $maxTraffic ]; then
+            if [ $curTraffic -le $maxTraffic ]; then
                 traffic=`echo "scale=2;$curTraffic/100" | bc`
                 sls deploy --inputs.traffic=$traffic --debug
                 sleep $INTERVAL
