@@ -5,8 +5,8 @@ name: serverless CI
 
 on:
   push:
-    branches: 
-    - dev
+    branches-ignore: 
+    - '*'
 
 jobs:
   build:
