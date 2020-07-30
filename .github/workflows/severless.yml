@@ -6,7 +6,6 @@ name: serverless CI
 on:
   push:
     branches: 
-    - master
     - dev
 
 jobs:
