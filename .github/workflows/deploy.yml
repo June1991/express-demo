@@ -4,7 +4,9 @@
 name: deploy
 
 on:
-  [push, pull_request]
+  push:
+    branches:
+      - dev
     
 env:
   STAGE: prod
