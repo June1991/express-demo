@@ -4,7 +4,7 @@
 name: deploy
 
 on:
-  push
+  [push, pull_request]
     
 env:
   STAGE: prod
@@ -16,8 +16,8 @@ jobs:
   deploy_serverless:
     name: deploy
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
     steps:
+      - run: echo ${{github.ref}}
       - name: clone local repository
         uses: actions/checkout@v2
       - name: npm install
