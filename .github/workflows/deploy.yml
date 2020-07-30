@@ -1,0 +1,30 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  STAGE: prod
+  SERVERLESS_PLATFORM_VENDOR: tencent
+  TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+  TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+
+jobs:
+  deploy_serverless:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone local repository
+        uses: actions/checkout@v2
+      - name: npm install
+        run: npm install
+      - name: deploy
+        uses: June1991/serverless-action@master
+        with:
+          args: --debug
