@@ -47,10 +47,10 @@ jobs:
         do
             if [ $curTraffic -lt $maxTraffic ]; then
                 traffic=`echo "scale=2;$curTraffic/100" | bc`
-                sls deploy --inputs.traffic=$traffic --inputs.publish
+                sls deploy --inputs.traffic=$traffic --debug
                 sleep $INTERVAL
             else
-                sls deploy --inputs.traffic=0 --inputs.publish
+                sls deploy --inputs.traffic=0 --inputs.publish --debug
                 break
             fi
             curTraffic=$(($curTraffic+$stepTraffic))
