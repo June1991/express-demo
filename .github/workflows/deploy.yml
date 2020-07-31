@@ -6,31 +6,35 @@ name: deploy
 on:
   push:
     branches:
-      - dev
-      - master
-    
-env:
-  SERVERLESS_PLATFORM_VENDOR: tencent
-  TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
-  TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      - '*'
 
 jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone local repository
+        uses: actions/checkout@v2
+      - name: install dependency
+        run: npm install
+      - name: build
+        run: npm build
   test:
     name: test
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{github.ref}}
-      - name: clone local repository
-        uses: actions/checkout@v2
-      - name: npm install
-        run: npm install
+      - name: unit test
+        run: '' 
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [build,test]
     steps:
-      - name: deploy
+      - name: deploy serverless
         uses: June1991/serverless-action@master
+        env:
+          SERVERLESS_PLATFORM_VENDOR: tencent
+          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
         with:
-          args: --debug
-          stage: prod 
+          stage: dev
