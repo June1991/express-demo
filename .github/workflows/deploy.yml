@@ -6,12 +6,19 @@ name: deploy
 on:
   push:
     branches:
-      - '*'
+      - dev
   
 jobs:
-  deploy:
-    name: deploy
+  test:
+    name: test
     runs-on: ubuntu-latest
+    steps:
+      - name: unit test
+        run: '' 
+  deploy:
+    name: deploy serverless
+    runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - name: clone local repository
         uses: actions/checkout@v2
@@ -25,5 +32,5 @@ jobs:
           SERVERLESS_PLATFORM_VENDOR: tencent
           TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
           TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
-          STAGE: prod 
+          STAGE: dev
         
