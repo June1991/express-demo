@@ -7,13 +7,7 @@ on:
   push:
     branches:
       - '*'
-
-env:
-  SERVERLESS_PLATFORM_VENDOR: tencent
-  TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
-  TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
   
-
 jobs:
   build:
     name: build
@@ -21,8 +15,6 @@ jobs:
     steps:
       - name: clone local repository
         uses: actions/checkout@v2
-      - name: install serverless
-        run: npm install -g serverless
       - name: install dependency
         run: npm install
       - name: build
@@ -39,5 +31,10 @@ jobs:
     needs: [build,test]
     steps:
       - name: deploy serverless
-        run: sls deploy --debug --inputs.stage=dev
+        uses: June1991/serverless-action@master
+        env:
+          SERVERLESS_PLATFORM_VENDOR: tencent
+          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+          STAGE: prod 
         
