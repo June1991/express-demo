@@ -39,5 +39,5 @@ jobs:
       - name: deploy serverless
         uses: June1991/serverless-action@master
         with:
-          args: '--inputs.stage=prod'
+          args: '--debug'
         
