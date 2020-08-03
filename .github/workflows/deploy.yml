@@ -8,6 +8,12 @@ on:
     branches:
       - '*'
 
+env:
+  SERVERLESS_PLATFORM_VENDOR: tencent
+  TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+  TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+  
+
 jobs:
   build:
     name: build
@@ -32,8 +38,6 @@ jobs:
     steps:
       - name: deploy serverless
         uses: June1991/serverless-action@master
-        env:
-          SERVERLESS_PLATFORM_VENDOR: tencent
-          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
-          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
-          STAGE: prod
+        with:
+          args: '--input.stage=prod'
+        
